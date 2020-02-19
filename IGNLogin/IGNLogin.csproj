@@ -16,6 +16,24 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IGNAuthentication.Data">
+      <HintPath>Lib\IGNAuthentication.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="IGNAuthentication.Domain">
+      <HintPath>Lib\IGNAuthentication.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="IGNAuthentication.EmailValidator">
+      <HintPath>Lib\IGNAuthentication.EmailValidator.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
