@@ -39,11 +39,11 @@ namespace IGNLogin
             {
                 if (string.IsNullOrWhiteSpace(msSqlConnectionString))
                 {
-                    dataConn = new MsSqlDataProvider(connectionString);
+                    dataConn = new MySqlDataProvider(connectionString);
                 }
                 else
                 {
-                    dataConn = new MySqlDataProvider(msSqlConnectionString);
+                    dataConn = new MsSqlDataProvider(msSqlConnectionString);
                 }
             }
             var repo = new IGNAuthentication.Domain.ServiceProvider(dataConn);
