@@ -1,9 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web" DefaultTarget="Publish">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <PublishDir>$(OutDir)_PublishedWebsites\NetCoreWebApp\</PublishDir>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="_PublishedWebsites\**" />
+    <Content Remove="_PublishedWebsites\**" />
+    <EmbeddedResource Remove="_PublishedWebsites\**" />
+    <None Remove="_PublishedWebsites\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
