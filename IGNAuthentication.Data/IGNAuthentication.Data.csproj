@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IGNAuthentication.Domain">
+      <HintPath>Lib\IGNAuthentication.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="IGNAuthentication.EmailValidator">
+      <HintPath>Lib\IGNAuthentication.EmailValidator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

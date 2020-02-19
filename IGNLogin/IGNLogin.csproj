@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Lib\**" />
     <Compile Remove="_PublishedWebsites\**" />
+    <Content Remove="Lib\**" />
     <Content Remove="_PublishedWebsites\**" />
+    <EmbeddedResource Remove="Lib\**" />
     <EmbeddedResource Remove="_PublishedWebsites\**" />
+    <None Remove="Lib\**" />
     <None Remove="_PublishedWebsites\**" />
   </ItemGroup>
 
@@ -22,18 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Lib\" />
+    <ProjectReference Include="..\IGNAuthentication.Data\IGNAuthentication.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="IGNAuthentication.Data">
-      <HintPath>Lib\IGNAuthentication.Data.dll</HintPath>
-    </Reference>
     <Reference Include="IGNAuthentication.Domain">
-      <HintPath>Lib\IGNAuthentication.Domain.dll</HintPath>
+      <HintPath>..\IGNAuthentication.Data\Lib\IGNAuthentication.Domain.dll</HintPath>
     </Reference>
     <Reference Include="IGNAuthentication.EmailValidator">
-      <HintPath>Lib\IGNAuthentication.EmailValidator.dll</HintPath>
+      <HintPath>..\IGNAuthentication.Data\Lib\IGNAuthentication.EmailValidator.dll</HintPath>
     </Reference>
   </ItemGroup>
 
