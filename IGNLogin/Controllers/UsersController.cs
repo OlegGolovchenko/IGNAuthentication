@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IGNLogin.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGNLogin.Controllers
@@ -23,18 +18,69 @@ namespace IGNLogin.Controllers
             try
             {
                 var user = _services.GetUserService().GetOrCreateUser(email);
-                if(user != null)
+                if (user != null)
                 {
-                    return Ok(new UserModel
-                    {
-                        Id = user.Id,
-                        Email = user.Email,
-                        IsActive = user.IsActive
-                    });
+                    return Ok(user);
                 }
                 return NotFound();
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("activate")]
+        public IActionResult ActivateUser([FromQuery]string email)
+        {
+            try
+            {
+                _services.GetUserService().ActivateUser(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("deactivate")]
+        public IActionResult DeactivateUser([FromQuery]string email)
+        {
+            try
+            {
+                _services.GetUserService().DeactivateUser(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("updatem")]
+        public IActionResult ChangeEmail([FromQuery]string email, [FromQuery]string newMail)
+        {
+            try
+            {
+                var user = _services.GetUserService().ChangeUserEmail(email, newMail);
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("delete")]
+        public IActionResult DeleteUser([FromQuery]string email)
+        {
+            try
+            {
+                _services.GetUserService().DeactivateUser(email);
+                return Ok();
+            }
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
