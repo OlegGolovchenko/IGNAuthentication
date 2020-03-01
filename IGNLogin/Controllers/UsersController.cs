@@ -30,7 +30,7 @@ namespace IGNLogin.Controllers
             }
         }
 
-        [HttpGet("activate")]
+        [HttpPost("activate")]
         public IActionResult ActivateUser([FromQuery]string email)
         {
             try
@@ -44,7 +44,7 @@ namespace IGNLogin.Controllers
             }
         }
 
-        [HttpGet("deactivate")]
+        [HttpPost("deactivate")]
         public IActionResult DeactivateUser([FromQuery]string email)
         {
             try
@@ -58,7 +58,7 @@ namespace IGNLogin.Controllers
             }
         }
 
-        [HttpGet("updatem")]
+        [HttpPost("updatem")]
         public IActionResult ChangeEmail([FromQuery]string email, [FromQuery]string newMail)
         {
             try
@@ -72,13 +72,27 @@ namespace IGNLogin.Controllers
             }
         }
 
-        [HttpGet("delete")]
+        [HttpPost("delete")]
         public IActionResult DeleteUser([FromQuery]string email)
         {
             try
             {
                 _services.GetUserService().DeactivateUser(email);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("active")]
+        public IActionResult IsActive([FromQuery]string email)
+        {
+            try
+            {
+                var isActive = _services.GetUserService().IsUserActive(email);
+                return Ok(isActive);
             }
             catch (Exception e)
             {
