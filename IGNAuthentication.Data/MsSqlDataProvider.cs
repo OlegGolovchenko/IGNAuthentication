@@ -10,6 +10,7 @@ namespace IGNAuthentication.Data
     public class MsSqlDataProvider : IDataProvider
     {
         private string _connectionString;
+        private SqlConnection _connection;
 
         public MsSqlDataProvider(string connectionString)
         {
@@ -50,20 +51,23 @@ namespace IGNAuthentication.Data
 
         public void ExecuteNonQuery(string query)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            if (_connection == null)
             {
-                connection.Open();
-                var command = new SqlCommand(query, connection);
-                command.ExecuteNonQuery();
-                connection.Close();
+                _connection = new SqlConnection(_connectionString);
+                _connection.Open();
             }
+            var command = new SqlCommand(query, _connection);
+            command.ExecuteNonQuery();
         }
 
-        public DbDataReader ExecuteReader(string query, out DbConnection connection)
+        public DbDataReader ExecuteReader(string query)
         {
-            connection = new SqlConnection(_connectionString);
-            connection.Open();
-            var command = new SqlCommand(query, (SqlConnection)connection);
+            if (_connection == null)
+            {
+                _connection = new SqlConnection(_connectionString);
+                _connection.Open();
+            }
+            var command = new SqlCommand(query, _connection);
             DbDataReader result = command.ExecuteReader();
             return result;
         }

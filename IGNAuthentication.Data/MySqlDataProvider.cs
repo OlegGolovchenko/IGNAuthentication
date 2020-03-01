@@ -11,6 +11,7 @@ namespace IGNAuthentication.Data
     public class MySqlDataProvider : IDataProvider
     {
         private string _connectionString;
+        private MySqlConnection _connection;
 
         public MySqlDataProvider(string connectionString)
         {
@@ -67,20 +68,23 @@ namespace IGNAuthentication.Data
 
         public void ExecuteNonQuery(string query)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            if (_connection == null)
             {
-                connection.Open();
-                var command = new MySqlCommand(query, connection);
-                command.ExecuteNonQuery();
-                connection.Close();
+                _connection = new MySqlConnection(_connectionString);
+                _connection.Open();
             }
+            var command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
         }
 
-        public DbDataReader ExecuteReader(string query, out DbConnection connection)
+        public DbDataReader ExecuteReader(string query)
         {
-            connection = new MySqlConnection(_connectionString);
-            connection.Open();
-            var command = new MySqlCommand(query, (MySqlConnection)connection);
+            if (_connection == null)
+            {
+                _connection = new MySqlConnection(_connectionString);
+                _connection.Open();
+            }
+            var command = new MySqlCommand(query, _connection);
             MySqlDataReader result = command.ExecuteReader();
             return result;
         }
