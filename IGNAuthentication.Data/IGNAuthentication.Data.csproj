@@ -16,6 +16,9 @@
     <Reference Include="IGNAuthentication.EmailValidator">
       <HintPath>Lib\IGNAuthentication.EmailValidator.dll</HintPath>
     </Reference>
+    <Reference Include="IGNKeyGen">
+      <HintPath>Lib\IGNKeyGen.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

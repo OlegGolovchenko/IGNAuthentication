@@ -99,5 +99,19 @@ namespace IGNLogin.Controllers
                 return BadRequest(e);
             }
         }
+
+        [HttpGet("offline")]
+        public IActionResult GetOfflineCode([FromQuery] string email)
+        {
+            try
+            {
+                var offlineCode = _services.GetUserService().GetOfflineActivationDataForUser(email);
+                return Ok(offlineCode);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 }
