@@ -113,5 +113,12 @@ namespace IGNLogin.Controllers
                 return BadRequest(e);
             }
         }
+
+        [HttpGet("offkeygen.zip")]
+        [Produces("application/octet-stream")]
+        public IActionResult GetOfflineKeyGen()
+        {
+            return new FileContentResult(System.IO.File.ReadAllBytes(".\\Programs\\IGNOfflineActivator.zip"), "application/octet-stream");
+        }
     }
 }
