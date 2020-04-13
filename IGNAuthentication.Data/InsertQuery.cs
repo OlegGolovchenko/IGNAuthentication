@@ -1,5 +1,5 @@
 ﻿using IGNAuthentication.Domain.DataRelated;
-using IGNAuthentication.Domain.Interfaces;
+using IGNAuthentication.Domain.Interfaces.QueryProvider;
 using System.Collections.Generic;
 using System.Globalization;
 

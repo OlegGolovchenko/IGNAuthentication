@@ -1,5 +1,6 @@
 ﻿using IGNAuthentication.Data.Enums;
 using IGNAuthentication.Domain.Interfaces;
+using IGNAuthentication.Domain.Interfaces.QueryProvider;
 using System.Data.Common;
 using System.Data.SqlClient;
 

@@ -1,5 +1,5 @@
 ﻿using IGNAuthentication.Data.Enums;
-using IGNAuthentication.Domain.Interfaces;
+using IGNAuthentication.Domain.Interfaces.QueryProvider;
 using System;
 
 namespace IGNAuthentication.Data

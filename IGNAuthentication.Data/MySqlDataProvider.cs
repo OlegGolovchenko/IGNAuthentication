@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Data.Common;
 using IGNAuthentication.Data.Enums;
+using IGNAuthentication.Domain.Interfaces.QueryProvider;
 
 namespace IGNAuthentication.Data
 {

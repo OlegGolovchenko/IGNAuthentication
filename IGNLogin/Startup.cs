@@ -12,6 +12,10 @@ using Microsoft.Extensions.Options;
 using IGNAuthentication.Data;
 using IGNAuthentication.Domain;
 using IGNAuthentication.Domain.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace IGNLogin
 {
@@ -48,6 +52,25 @@ namespace IGNLogin
             }
             var repo = new IGNAuthentication.Domain.ServiceProvider(dataConn);
             services.AddSingleton(repo);
+            var secret = Environment.GetEnvironmentVariable("SECRET");
+            var key = Encoding.ASCII.GetBytes(secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x=>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = Environment.GetEnvironmentVariable("ISSUER"),
+                    ValidateAudience = false
+                };
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -58,7 +81,7 @@ namespace IGNLogin
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

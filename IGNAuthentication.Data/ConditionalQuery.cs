@@ -1,4 +1,4 @@
-﻿using IGNAuthentication.Domain.Interfaces;
+﻿using IGNAuthentication.Domain.Interfaces.QueryProvider;
 
 namespace IGNAuthentication.Data
 {

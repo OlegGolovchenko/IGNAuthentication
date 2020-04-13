@@ -22,6 +22,9 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
+        "SECRET": "TEST_SECRET_FOR_AUTHENTICATION_API",
+        "ADMIN_CODE": "TnEh8JpN",
+        "ISSUER": "http://localhost:5000",
         "SQLSERVER_CONNECTION_STRING": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=testauth;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

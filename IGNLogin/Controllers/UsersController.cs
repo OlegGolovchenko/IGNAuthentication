@@ -1,9 +1,11 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGNLogin.Controllers
 {
     [Route("api/user")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -13,6 +15,7 @@ namespace IGNLogin.Controllers
             _services = services;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetOrCreateUser([FromQuery]string email)
         {
             try
@@ -31,6 +34,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("activate")]
+        [Authorize(Roles = "admin")]
         public IActionResult ActivateUser([FromQuery]string email)
         {
             try
@@ -45,6 +49,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("deactivate")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeactivateUser([FromQuery]string email)
         {
             try
@@ -59,6 +64,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("updatem")]
+        [Authorize(Roles = "admin")]
         public IActionResult ChangeEmail([FromQuery]string email, [FromQuery]string newMail)
         {
             try
@@ -73,6 +79,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("delete")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteUser([FromQuery]string email)
         {
             try
@@ -87,6 +94,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpGet("active")]
+        [AllowAnonymous]
         public IActionResult IsActive([FromQuery]string email)
         {
             try
@@ -101,6 +109,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpGet("offline")]
+        [AllowAnonymous]
         public IActionResult GetOfflineCode([FromQuery] string email)
         {
             try
@@ -116,6 +125,7 @@ namespace IGNLogin.Controllers
 
         [HttpGet("offkeygen.zip")]
         [Produces("application/octet-stream")]
+        [AllowAnonymous]
         public IActionResult GetOfflineKeyGen()
         {
             return new FileContentResult(System.IO.File.ReadAllBytes(".\\Programs\\IGNOfflineActivator.zip"), "application/octet-stream");
