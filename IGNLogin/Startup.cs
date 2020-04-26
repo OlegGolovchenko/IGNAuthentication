@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using IGNAuthentication.Data;
-using IGNAuthentication.Domain;
 using IGNAuthentication.Domain.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -54,6 +47,15 @@ namespace IGNLogin
             services.AddSingleton(repo);
             var secret = Environment.GetEnvironmentVariable("SECRET");
             var key = Encoding.ASCII.GetBytes(secret);
+            services.AddCors(x =>
+            {
+                x.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,7 +72,7 @@ namespace IGNLogin
                     ValidIssuer = Environment.GetEnvironmentVariable("ISSUER"),
                     ValidateAudience = false
                 };
-            });
+            });            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -81,8 +83,11 @@ namespace IGNLogin
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors();
             app.UseAuthentication();
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }

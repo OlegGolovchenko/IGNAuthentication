@@ -68,7 +68,7 @@ namespace IGNLogin.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public IActionResult Register([FromBody]UserLoginModel newUser)
+        public IActionResult Login([FromBody]UserLoginModel newUser)
         {
             var user = _services.GetUserService().LoginCommunity(newUser.Email, newUser.Password);
             if (user.Id == -1)
@@ -114,6 +114,16 @@ namespace IGNLogin.Controllers
             if (this.User != null)
             {
                 return Ok($"user logged in: {this.User.Claims.FirstOrDefault(usr => usr.Type == ClaimTypes.Name)?.Value}");
+            }
+            return Unauthorized();
+        }
+
+        [HttpGet("isadmin")]
+        public IActionResult IsAdmin()
+        {
+            if (this.User != null)
+            {
+                return Ok(this.User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.Role).Value == "admin");
             }
             return Unauthorized();
         }

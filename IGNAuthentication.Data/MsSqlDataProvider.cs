@@ -1,6 +1,7 @@
 ﻿using IGNAuthentication.Data.Enums;
 using IGNAuthentication.Domain.Interfaces;
 using IGNAuthentication.Domain.Interfaces.QueryProvider;
+using System;
 using System.Data.Common;
 using System.Data.SqlClient;
 
@@ -10,6 +11,8 @@ namespace IGNAuthentication.Data
     {
         private readonly string _connectionString;
         private SqlConnection _connection;
+
+        public bool queryToOutput = false;
 
         public MsSqlDataProvider(string connectionString)
         {
@@ -23,6 +26,10 @@ namespace IGNAuthentication.Data
                 _connection = new SqlConnection(_connectionString);
                 _connection.Open();
             }
+            if (queryToOutput)
+            {
+                Console.WriteLine(query.GetResultingString());
+            }
             var command = new SqlCommand(query.GetResultingString(), _connection);
             command.ExecuteNonQuery();
         }
@@ -33,6 +40,10 @@ namespace IGNAuthentication.Data
             {
                 _connection = new SqlConnection(_connectionString);
                 _connection.Open();
+            }
+            if (queryToOutput)
+            {
+                Console.WriteLine(query.GetResultingString());
             }
             var command = new SqlCommand(query.GetResultingString(), _connection);
             DbDataReader result = command.ExecuteReader();

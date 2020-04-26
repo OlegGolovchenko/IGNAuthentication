@@ -20,7 +20,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                var user = _services.GetUserService().GetOrCreateUser(email);
+                var user = _services.GetUserService().CreateUser(email);
                 if (user != null)
                 {
                     return Ok(user);
@@ -69,7 +69,8 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                var user = _services.GetUserService().ChangeUserEmail(email, newMail);
+                _services.GetUserService().ChangeUserEmail(email, newMail);
+                var user = _services.GetUserService().GetUser(email);
                 return Ok(user);
             }
             catch (Exception e)

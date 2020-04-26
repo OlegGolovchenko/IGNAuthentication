@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administrator Panel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"></script>
+    <script src="scripts/login.js"></script>
+</head>
+<body>
+    <p>
+        <label data-bind="visible: registerRequested">User Name:</label>
+        <input data-bind="value: uName, visible: registerRequested" type="text"/>
+        <label data-bind="visible: logInNeeded">Email:</label>
+        <input data-bind="value: eMail, visible: logInNeeded" type="email" />
+        <label data-bind="visible: logInNeeded">Password:</label>
+        <input data-bind="value: password, visible: logInNeeded" type="password" />
+        <label data-bind="visible: logInNeeded">Admin Code:</label>
+        <input data-bind="value: admCode, visible: logInNeeded" type="password" />
+        <label data-bind="text: loggedInUser().login, visible: loggedIn"></label>
+        <button data-bind="click: logout, visible: loggedIn">Log out</button>
+        <button data-bind="click: login, visible: logInNeeded">Login</button>
+        <button data-bind="click: register, visible: logInNeeded">Register</button>
+        <button data-bind="click: dlOffActivator, visible: loggedIn">Download offline activator</button>
+    </p>
+    <p>
+        <select data-bind="options: users, optionsText: 'name', optionValue: 'id', value: selectedUser, visible: loggedInAdmin"></select>
+        <button data-bind="click: activate, visible: loggedInAdmin">Activate</button>
+        <button data-bind="click: deactivate, visible: loggedInAdmin">Deactivate</button>
+    </p>
+</body>
+</html>

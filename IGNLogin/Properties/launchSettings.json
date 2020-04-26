@@ -25,7 +25,7 @@
         "SECRET": "TEST_SECRET_FOR_AUTHENTICATION_API",
         "ADMIN_CODE": "TnEh8JpN",
         "ISSUER": "http://localhost:5000",
-        "SQLSERVER_CONNECTION_STRING": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=testauth;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+        "SQLSERVER_CONNECTION_STRING": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ignauth;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"

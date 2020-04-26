@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System.Data.Common;
 using IGNAuthentication.Data.Enums;
 using IGNAuthentication.Domain.Interfaces.QueryProvider;
+using System;
 
 namespace IGNAuthentication.Data
 {
@@ -10,6 +11,8 @@ namespace IGNAuthentication.Data
     {
         private readonly string _connectionString;
         private MySqlConnection _connection;
+
+        public bool queryToOutput = false;
 
         public MySqlDataProvider(string connectionString)
         {
@@ -23,6 +26,10 @@ namespace IGNAuthentication.Data
                 _connection = new MySqlConnection(_connectionString);
                 _connection.Open();
             }
+            if (queryToOutput)
+            {
+                Console.WriteLine(query.GetResultingString());
+            }
             var command = new MySqlCommand(query.GetResultingString(), _connection);
             command.ExecuteNonQuery();
         }
@@ -33,6 +40,10 @@ namespace IGNAuthentication.Data
             {
                 _connection = new MySqlConnection(_connectionString);
                 _connection.Open();
+            }
+            if (queryToOutput)
+            {
+                Console.WriteLine(query.GetResultingString());
             }
             var command = new MySqlCommand(query.GetResultingString(), _connection);
             MySqlDataReader result = command.ExecuteReader();
