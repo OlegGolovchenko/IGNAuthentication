@@ -1,8 +1,49 @@
-﻿function User(id, name, active) {
+﻿function User(id, name, active, token) {
     this.id = id;
     this.name = name;
     this.active = active;
     this.inactive = !this.active;
+    this.token = token;
+
+    this.activate = function () {
+
+        var isActive = false;
+        var bearerString = "Bearer " + this.token;
+        jQuery.ajax({
+            url: "/api/user/activateById?id=" + this.id,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", bearerString);
+            },
+            success: function (data) {
+                isActive = true;
+            }
+        });
+        this.active = isActive;
+    };
+
+    this.deactivate = function () {
+
+        var isActive = true;
+        var bearerString = "Bearer " + this.token;
+        jQuery.ajax({
+            url: "/api/user/deactivateById?id=" + this.id,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", bearerString);
+            },
+            success: function (data) {
+                isActive = false;
+            }
+        });
+        this.active = isActive;
+    };
 };
 
 function CommunityUser() {
@@ -30,7 +71,7 @@ function AuthorisationUser() {
 
     this.admCode = ko.observable("");
 
-    this.users = ko.observableArray([new User(0, "test", true), new User(1, "test2", false)]);
+    this.registeredUsers = ko.observableArray();
 
     this.selectedUser = ko.observable();
 
@@ -55,7 +96,7 @@ function AuthorisationUser() {
                 data: JSON.stringify({
                     Email: this.eMail(),
                     Password: this.password(),
-                    AdminCode: this.admCode(),                    
+                    AdminCode: this.admCode(),
                     Login: this.uName()
                 }),
                 dataType: "json",
@@ -79,6 +120,27 @@ function AuthorisationUser() {
                     console.log(data);
                 }
             });
+            var users = new Array();
+            jQuery.ajax({
+                url: "/api/community",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + result.token());
+                },
+                success: function (data) {
+                    var index = 0;
+                    for (index = 0; index < data.length; index++) {
+                        users.push(new User(data[index].id, data[index].login, data[index].isActive, result.token()));
+                    }
+                    console.log(data);
+                }
+            });
+            for (var i = 0; i < users.length; i++) {
+                this.registeredUsers.push(users[i]);
+            }
             this.loggedInAdmin(isAdmin);
             this.loggedInUser(result);
             this.logInNeeded(false);
@@ -118,6 +180,27 @@ function AuthorisationUser() {
                 isAdmin = data;
             }
         });
+        var users = new Array();
+        jQuery.ajax({
+            url: "/api/community",
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + result.token());
+            },
+            success: function (data) {
+                var index = 0;
+                for (index = 0; index < data.length; index++) {
+                    users.push(new User(data[index].id, data[index].login, data[index].isActive, result.token()));
+                }
+                console.log(data);
+            }
+        });
+        for (var i = 0; i < users.length; i++) {
+            this.registeredUsers.push(users[i]);
+        }
         this.loggedInAdmin(isAdmin);
         this.loggedInUser(result);
         this.logInNeeded(false);
@@ -125,33 +208,18 @@ function AuthorisationUser() {
         this.loggedIn(true);
     };
 
-    this.dlOffActivator = function() {
-
+    this.dlOffActivator = function () {
+        window.open("/api/user/offkeygen.zip", '_blank');
     };
 
     this.logout = function () {
-        this.loggedInUser(new UserModel("","",""));
+        this.loggedInUser(new UserModel("", "", ""));
+        this.registeredUsers.removeAll();
         this.logInNeeded(true);
         this.registerRequested(false);
         this.loggedIn(false);
         this.loggedInAdmin(false);
     }
-
-    this.activate = function () {
-        if (this.selectedUser().active) {
-            alert("selected user is: " + this.selectedUser().name + " is active");
-        } else {
-            alert("selected user is: " + this.selectedUser().name);
-        }
-    };
-
-    this.deactivate = function () {
-        if (!this.selectedUser().active) {
-            alert("selected user is: " + this.selectedUser().name + " is inactive");
-        } else {
-            alert("selected user is: " + this.selectedUser().name);
-        }
-    };
 };
 
 $(document).ready(function () {

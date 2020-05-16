@@ -34,7 +34,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("activate")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "user")]
         public IActionResult ActivateUser([FromQuery]string email)
         {
             try
@@ -48,13 +48,43 @@ namespace IGNLogin.Controllers
             }
         }
 
-        [HttpPost("deactivate")]
+        [HttpPost("activateById")]
         [Authorize(Roles = "admin")]
+        public IActionResult ActivateUser([FromQuery]long id)
+        {
+            try
+            {
+                _services.GetUserService().ActivateUser(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost("deactivate")]
+        [Authorize(Roles = "user")]
         public IActionResult DeactivateUser([FromQuery]string email)
         {
             try
             {
                 _services.GetUserService().DeactivateUser(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost("deactivateById")]
+        [Authorize(Roles = "admin")]
+        public IActionResult DeactivateUser([FromQuery]long id)
+        {
+            try
+            {
+                _services.GetUserService().DeactivateUser(id);
                 return Ok();
             }
             catch (Exception e)
@@ -85,7 +115,22 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().DeactivateUser(email);
+                _services.GetUserService().DeleteUser(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost("delete")]
+        [Authorize(Roles = "admin")]
+        public IActionResult DeleteUser([FromQuery]long id)
+        {
+            try
+            {
+                _services.GetUserService().DeleteUser(id);
                 return Ok();
             }
             catch (Exception e)

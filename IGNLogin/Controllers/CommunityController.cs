@@ -24,6 +24,23 @@ namespace IGNLogin.Controllers
             _services = services;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult ListUsers()
+        {
+            try
+            {
+                return Ok(_services.GetUserService().
+                                    ListCommunity().
+                                    Where(usr=> usr.Login != User.Claims.
+                                          FirstOrDefault(uc => uc.Type == ClaimTypes.Name)?.Value));
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public IActionResult Register([FromBody]RegisterUserLoginModel newUser)
