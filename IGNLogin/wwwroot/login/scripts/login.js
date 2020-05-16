@@ -196,6 +196,9 @@ function AuthorisationUser() {
                     users.push(new User(data[index].id, data[index].login, data[index].isActive, result.token()));
                 }
                 console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
             }
         });
         for (var i = 0; i < users.length; i++) {
