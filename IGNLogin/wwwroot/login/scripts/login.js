@@ -182,7 +182,7 @@ function AuthorisationUser() {
         });
         var users = new Array();
         jQuery.ajax({
-            url: "/api/community",
+            url: "/api/community/list",
             type: "GET",
             dataType: "json",
             contentType: "application/json; charset=utf-8",

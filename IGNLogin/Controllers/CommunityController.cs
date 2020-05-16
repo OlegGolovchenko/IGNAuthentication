@@ -24,7 +24,7 @@ namespace IGNLogin.Controllers
             _services = services;
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         [Authorize(Roles = "admin")]
         public IActionResult ListUsers()
         {
