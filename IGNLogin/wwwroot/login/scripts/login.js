@@ -197,8 +197,10 @@ function AuthorisationUser() {
                 }
                 console.log(data);
             },
-            error: function (data) {
-                console.log(data);
+            error: function (request, status, error) {
+                console.log(request.responseText);
+                console.log(status);
+                console.log(error);
             }
         });
         for (var i = 0; i < users.length; i++) {
