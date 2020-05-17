@@ -1,6 +1,7 @@
-﻿function User(id, name, active, token) {
+﻿function User(id, name, userId, active, token) {
     this.id = id;
     this.name = name;
+    this.userId = userId;
     this.active = active;
     this.inactive = !this.active;
     this.token = token;
@@ -10,7 +11,7 @@
         var isActive = false;
         var bearerString = "Bearer " + this.token;
         jQuery.ajax({
-            url: "/api/user/activateById?id=" + this.id,
+            url: "/api/user/activateById?id=" + this.userId,
             type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -30,7 +31,7 @@
         var isActive = true;
         var bearerString = "Bearer " + this.token;
         jQuery.ajax({
-            url: "/api/user/deactivateById?id=" + this.id,
+            url: "/api/user/deactivateById?id=" + this.userId,
             type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -122,7 +123,7 @@ function AuthorisationUser() {
             });
             var users = new Array();
             jQuery.ajax({
-                url: "/api/community",
+                url: "/api/community/list",
                 type: "GET",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -133,9 +134,14 @@ function AuthorisationUser() {
                 success: function (data) {
                     var index = 0;
                     for (index = 0; index < data.length; index++) {
-                        users.push(new User(data[index].id, data[index].login, data[index].isActive, result.token()));
+                        users.push(new User(data[index].id, data[index].login, data[index].userId, data[index].isActive, result.token()));
                     }
                     console.log(data);
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                    console.log(status);
+                    console.log(error);
                 }
             });
             for (var i = 0; i < users.length; i++) {
@@ -193,7 +199,7 @@ function AuthorisationUser() {
             success: function (data) {
                 var index = 0;
                 for (index = 0; index < data.length; index++) {
-                    users.push(new User(data[index].id, data[index].login, data[index].isActive, result.token()));
+                    users.push(new User(data[index].id, data[index].login, data[index].userId, data[index].isActive, result.token()));
                 }
                 console.log(data);
             },
