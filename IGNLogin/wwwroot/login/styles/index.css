@@ -1,0 +1,106 @@
+﻿html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: azure;
+}
+
+.header {
+    display: block;
+    width: 100%;
+    height: 50px;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1;
+    color: white;
+    background-color: cadetblue;
+    margin: 0;
+}
+
+    .header span {
+        margin: auto;
+        text-align: left;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        left: 20px;
+        display: block;
+    }
+
+.content {
+    display: block;
+    width: 80%;
+    height: 100%;
+    top: 50px;
+    left: 10%;
+    right: 10%;
+    bottom: 50px;
+    position: relative;
+    z-index: 0;
+    background-color: white;
+    margin: 0;
+}
+
+.footer {
+    display: block;
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1;
+    color: white;
+    background-color: cadetblue;
+    margin: 0;
+    vertical-align: middle;
+}
+
+    .footer span {
+        margin: auto;
+        text-align: left;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: 100%;
+        display: inline-block;
+    }
+
+.copy_date {
+    position: absolute;
+    right: 0;
+}
+
+.copyright {
+    position: absolute;
+    left: 0;
+}
+
+input {
+    border-radius: 5px;
+    height: 25px;
+}
+
+label {
+    border-radius: 5px;
+    background-color: cadetblue;
+    color: white;
+    height: 25px;
+}
+
+button {
+    border-radius: 5px;
+    height: 25px;
+    background-color: cadetblue;
+    color: white;
+}
+
+button:hover {
+    background-color: aquamarine;
+    color: grey;
+}
