@@ -2,8 +2,8 @@
     this.id = id;
     this.name = name;
     this.userId = userId;
-    this.active = active;
-    this.inactive = !this.active;
+    this.active = ko.observable(active);
+    this.inactive = ko.observable(!this.active());
     this.token = token;
 
     this.activate = function () {
@@ -13,7 +13,6 @@
         jQuery.ajax({
             url: "/api/user/activateById?id=" + this.userId,
             type: "POST",
-            dataType: "json",
             contentType: "application/json; charset=utf-8",
             async: false,
             beforeSend: function (xhr) {
@@ -21,9 +20,15 @@
             },
             success: function (data) {
                 isActive = true;
+            },
+            error(request, status, error) {
+                console.log(request);
+                console.log(status);
+                console.log(error);
             }
         });
-        this.active = isActive;
+        this.active(isActive);
+        this.inactive(!isActive);
     };
 
     this.deactivate = function () {
@@ -33,7 +38,6 @@
         jQuery.ajax({
             url: "/api/user/deactivateById?id=" + this.userId,
             type: "POST",
-            dataType: "json",
             contentType: "application/json; charset=utf-8",
             async: false,
             beforeSend: function (xhr) {
@@ -41,9 +45,15 @@
             },
             success: function (data) {
                 isActive = false;
+            },
+            error(request, status, error) {
+                console.log(request);
+                console.log(status);
+                console.log(error);
             }
         });
-        this.active = isActive;
+        this.active(isActive);
+        this.inactive(!isActive);
     };
 };
 
@@ -64,13 +74,13 @@ function UserModel(login, email, token) {
 function AuthorisationUser() {
     this.registerRequested = ko.observable(false);
 
-    this.uName = ko.observable("");
+    this.uName = ko.observable(localStorage.getItem("un"));
 
-    this.eMail = ko.observable("");
+    this.eMail = ko.observable(localStorage.getItem("em"));
 
-    this.password = ko.observable("");
+    this.password = ko.observable(localStorage.getItem("pw"));
 
-    this.admCode = ko.observable("");
+    this.admCode = ko.observable(localStorage.getItem("ac"));
 
     this.registeredUsers = ko.observableArray();
 
@@ -153,6 +163,11 @@ function AuthorisationUser() {
             this.registerRequested(false);
             this.loggedIn(true);
             this.registerRequested(false);
+            localStorage.clear();
+            localStorage.setItem("un", this.uName());
+            localStorage.setItem("em", this.eMail());
+            localStorage.setItem("pw", this.password());
+            localStorage.setItem("ac", this.admCode());
         }
     };
 
@@ -217,6 +232,11 @@ function AuthorisationUser() {
         this.logInNeeded(false);
         this.registerRequested(false);
         this.loggedIn(true);
+        localStorage.clear();
+        localStorage.setItem("un", this.uName());
+        localStorage.setItem("em", this.eMail());
+        localStorage.setItem("pw", this.password());
+        localStorage.setItem("ac", this.admCode());
     };
 
     this.dlOffActivator = function () {
@@ -230,6 +250,7 @@ function AuthorisationUser() {
         this.registerRequested(false);
         this.loggedIn(false);
         this.loggedInAdmin(false);
+        localStorage.clear();
     }
 };
 

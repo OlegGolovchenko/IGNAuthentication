@@ -32,6 +32,8 @@
             <ul data-bind="foreach: registeredUsers(), visible: loggedInAdmin">
                 <li>
                     <span data-bind="text: name"></span>
+                    <span class="status_active" data-bind="visible: active"></span>
+                    <span class="status_inactive" data-bind="visible: inactive"></span>
                     <button data-bind="click: activate">Activate</button>
                     <button data-bind="click: deactivate">Deactivate</button>
                 </li>
