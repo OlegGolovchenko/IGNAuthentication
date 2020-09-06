@@ -22,9 +22,9 @@
                 isActive = true;
             },
             error(request, status, error) {
-                console.log(request);
-                console.log(status);
-                console.log(error);
+                //console.log(request);
+                //console.log(status);
+                //console.log(error);
             }
         });
         this.active(isActive);
@@ -47,9 +47,9 @@
                 isActive = false;
             },
             error(request, status, error) {
-                console.log(request);
-                console.log(status);
-                console.log(error);
+                //console.log(request);
+                //console.log(status);
+                //console.log(error);
             }
         });
         this.active(isActive);
@@ -128,7 +128,7 @@ function AuthorisationUser() {
                 },
                 success: function (data) {
                     isAdmin = data;
-                    console.log(data);
+                    //console.log(data);
                 }
             });
             var users = new Array();
@@ -146,12 +146,12 @@ function AuthorisationUser() {
                     for (index = 0; index < data.length; index++) {
                         users.push(new User(data[index].id, data[index].login, data[index].userId, data[index].isActive, result.token()));
                     }
-                    console.log(data);
+                    //console.log(data);
                 },
                 error: function (request, status, error) {
-                    console.log(request.responseText);
-                    console.log(status);
-                    console.log(error);
+                    //console.log(request.responseText);
+                    //console.log(status);
+                    //console.log(error);
                 }
             });
             for (var i = 0; i < users.length; i++) {
@@ -216,12 +216,12 @@ function AuthorisationUser() {
                 for (index = 0; index < data.length; index++) {
                     users.push(new User(data[index].id, data[index].login, data[index].userId, data[index].isActive, result.token()));
                 }
-                console.log(data);
+                //console.log(data);
             },
             error: function (request, status, error) {
-                console.log(request.responseText);
-                console.log(status);
-                console.log(error);
+                //console.log(request.responseText);
+                //console.log(status);
+                //console.log(error);
             }
         });
         for (var i = 0; i < users.length; i++) {
