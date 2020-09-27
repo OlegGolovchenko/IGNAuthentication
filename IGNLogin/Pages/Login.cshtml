@@ -1,0 +1,24 @@
+﻿@page
+@model IGNLogin.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+<link href="~/login/styles/index.css" rel="stylesheet" />
+<div class="header">
+    <span>IgRok-Net user management</span>
+</div>
+<div class="content">
+    <form method="post">
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" type="email" name="email" />
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" type="password" name="password" />
+        <button type="submit">Login</button>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+<div class="footer">
+    <span class="copyright">Copyright Oleg Golovchenko</span>
+    <span class="copy_date">2020</span>
+</div>
+

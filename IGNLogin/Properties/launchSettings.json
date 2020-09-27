@@ -20,7 +20,7 @@
     "IGNLogin": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "login",
       "environmentVariables": {
         "SECRET": "TEST_SECRET_FOR_AUTHENTICATION_API",
         "ADMIN_CODE": "TnEh8JpN",

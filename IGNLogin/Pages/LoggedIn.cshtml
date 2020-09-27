@@ -1,0 +1,42 @@
+﻿@page
+@model IGNLogin.Pages.LoggedInModel
+@{
+}
+<link href="~/login/styles/index.css" rel="stylesheet" />
+<div class="header">
+    <span>IgRok-Net user management</span>
+</div>
+<div class="content">
+    <form method="post">
+        <label asp-for="LoginName">@Model.UserName</label>
+        <button type="submit">Log out</button>
+        @Html.AntiForgeryToken()
+        <a href="/api/user/offkeygen.zip">Download offline keygen</a>
+    </form>
+    <p>
+        <ul>
+            @foreach (var usr in Model.Users)
+            {
+            <li>
+                <span>
+                    @usr.Login
+                </span>
+                @if (usr.IsActive)
+                {
+                    <span class="status_active"></span>
+                    <a href="/DeactivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Deactivate user</a>
+                }
+                @if (!usr.IsActive)
+                {
+                    <span class="status_inactive"></span>
+                    <a href="/ActivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Activate user</a>
+                }
+            </li>
+            }
+        </ul>
+    </p>
+</div>
+<div class="footer">
+    <span class="copyright">Copyright Oleg Golovchenko</span>
+    <span class="copy_date">2020</span>
+</div>

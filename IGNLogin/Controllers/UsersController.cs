@@ -34,7 +34,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("activate")]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "User")]
         public IActionResult ActivateUser([FromQuery]string email)
         {
             try
@@ -49,7 +49,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("activateById")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ActivateUser([FromQuery]long id)
         {
             try
@@ -64,7 +64,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("deactivate")]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "User")]
         public IActionResult DeactivateUser([FromQuery]string email)
         {
             try
@@ -79,7 +79,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("deactivateById")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeactivateUser([FromQuery]long id)
         {
             try
@@ -94,7 +94,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("updatem")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ChangeEmail([FromQuery]string email, [FromQuery]string newMail)
         {
             try
@@ -110,7 +110,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("delete")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser([FromQuery]string email)
         {
             try
@@ -125,7 +125,7 @@ namespace IGNLogin.Controllers
         }
 
         [HttpPost("delete")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser([FromQuery]long id)
         {
             try

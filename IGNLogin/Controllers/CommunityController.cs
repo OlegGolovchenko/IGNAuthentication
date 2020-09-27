@@ -24,8 +24,33 @@ namespace IGNLogin.Controllers
             _services = services;
         }
 
+        [HttpGet("makeadmin")]
+        [AllowAnonymous]
+        public IActionResult AssignAdminRole([FromQuery]string email, [FromQuery]string adminCode)
+        {
+            var adminAccessCode = Environment.GetEnvironmentVariable("ADMIN_CODE");
+            if (string.IsNullOrEmpty(adminCode) || adminCode != adminAccessCode)
+            {
+                return Unauthorized("wrong admin code provided");
+            }
+            var user = _services.GetUserService().GetUser(email);
+            if(user.Id == -1)
+            {
+                return NotFound($"User with email {email} does not exist");
+            }
+            try
+            {
+                _services.GetUserService().AssignRoles(user.Id, "User;Admin");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+            return Ok();
+        }
+
         [HttpGet("list")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ListUsers()
         {
             try
@@ -62,13 +87,13 @@ namespace IGNLogin.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Login)
             };
-            if (newUser.AdminCode == adminAccessCode)
+            if(!user.Roles.Any())
             {
-                claims.Add(new Claim(ClaimTypes.Role, "admin"));
+                claims.Add(new Claim(ClaimTypes.Role, "User"));
             }
-            else
+            foreach (var role in user.Roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "user"));
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
             var now = DateTime.UtcNow;
             var signature = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
@@ -104,13 +129,13 @@ namespace IGNLogin.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Login)
             };
-            if (newUser.AdminCode == adminAccessCode)
+            if (!user.Roles.Any())
             {
-                claims.Add(new Claim(ClaimTypes.Role, "admin"));
+                claims.Add(new Claim(ClaimTypes.Role, "User"));
             }
-            else
+            foreach (var role in user.Roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "user"));
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
             var now = DateTime.UtcNow;
             var signature = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
@@ -140,7 +165,7 @@ namespace IGNLogin.Controllers
         {
             if (this.User != null)
             {
-                return Ok(this.User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.Role).Value == "admin");
+                return Ok(this.User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.Role && x.Value == "Admin") != null);
             }
             return Unauthorized();
         }
