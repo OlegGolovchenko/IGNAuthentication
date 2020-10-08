@@ -27,6 +27,7 @@ namespace IGNLogin.Pages
         {
             _apiRequester = new HttpClient();
             _services = services;
+            Users = new List<CommunityUserListModel>();
         }
 
         public async Task OnGetAsync([FromQuery] Models.UserModel usr)
