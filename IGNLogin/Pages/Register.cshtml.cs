@@ -34,7 +34,7 @@ namespace IGNLogin.Pages
             Password = "";
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] string email, [FromForm] string password, [FromForm] string login)
+        public async Task<IActionResult> OnPostAsync([FromForm] string email, [FromForm] string password, [FromForm] string login, [FromQuery] string redir)
         {
             var result = await _apiRequester.PostAsync($"{Request.Scheme}://{Request.Host}/api/community/register",
                 new StringContent(JsonConvert.SerializeObject(new RegisterUserLoginModel
@@ -46,13 +46,13 @@ namespace IGNLogin.Pages
             if (result.IsSuccessStatusCode)
             {
                 var resultUser = JsonConvert.DeserializeObject<UserModel>(await result.Content.ReadAsStringAsync());
-                if (string.IsNullOrWhiteSpace(_redirectDestination))
+                if (string.IsNullOrWhiteSpace(redir))
                 {
                     return RedirectToPage("loggedin", resultUser);
                 }
                 else
                 {
-                    return RedirectToPage(_redirectDestination, resultUser);
+                    return Redirect($"{redir}?Login={resultUser.Login}&Email={resultUser.Email}&Token={resultUser.Token}");
                 }
             }
             return Unauthorized();
