@@ -12,6 +12,7 @@ using Google.Protobuf.WellKnownTypes;
 using IGNLogin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Rewrite.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -60,7 +61,11 @@ namespace IGNLogin.Pages
                     return Redirect($"{redir}?Login={resultUser.Login}&Email={resultUser.Email}&Token={resultUser.Token}");
                 }
             }
-            return Unauthorized();
+            else
+            {
+                var resultError = JsonConvert.DeserializeObject<Exception>(await result.Content.ReadAsStringAsync());
+                return BadRequest(resultError);
+            }
         }
     }
 }

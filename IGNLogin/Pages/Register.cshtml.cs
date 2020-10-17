@@ -55,7 +55,11 @@ namespace IGNLogin.Pages
                     return Redirect($"{redir}?Login={resultUser.Login}&Email={resultUser.Email}&Token={resultUser.Token}");
                 }
             }
-            return Unauthorized();
+            else
+            {
+                var resultError = JsonConvert.DeserializeObject<Exception>(await result.Content.ReadAsStringAsync());
+                return BadRequest(resultError);
+            }
         }
     }
 }
