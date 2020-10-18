@@ -1,4 +1,5 @@
 ﻿using System;
+using IGNAuthentication.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,10 @@ namespace IGNLogin.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IGNAuthentication.Domain.ServiceProvider _services;
-        public UsersController(IGNAuthentication.Domain.ServiceProvider services)
+        private IUserService _service;
+        public UsersController(IUserService service)
         {
-            _services = services;
+            _service = service;
         }
         [HttpGet]
         [AllowAnonymous]
@@ -20,7 +21,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                var user = _services.GetUserService().CreateUser(email);
+                var user = _service.CreateUser(email);
                 if (user != null)
                 {
                     return Ok(user);
@@ -39,7 +40,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().ActivateUser(email);
+                _service.ActivateUser(email);
                 return Ok();
             }
             catch (Exception e)
@@ -54,7 +55,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().ActivateUser(id);
+                _service.ActivateUser(id);
                 return Ok();
             }
             catch (Exception e)
@@ -69,7 +70,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().DeactivateUser(email);
+                _service.DeactivateUser(email);
                 return Ok();
             }
             catch (Exception e)
@@ -84,7 +85,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().DeactivateUser(id);
+                _service.DeactivateUser(id);
                 return Ok();
             }
             catch (Exception e)
@@ -99,8 +100,8 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().ChangeUserEmail(email, newMail);
-                var user = _services.GetUserService().GetUser(email);
+                _service.ChangeUserEmail(email, newMail);
+                var user = _service.GetUser(email);
                 return Ok(user);
             }
             catch (Exception e)
@@ -115,7 +116,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().DeleteUser(email);
+                _service.DeleteUser(email);
                 return Ok();
             }
             catch (Exception e)
@@ -130,7 +131,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                _services.GetUserService().DeleteUser(id);
+                _service.DeleteUser(id);
                 return Ok();
             }
             catch (Exception e)
@@ -145,7 +146,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                var isActive = _services.GetUserService().IsUserActive(email);
+                var isActive = _service.IsUserActive(email);
                 return Ok(isActive);
             }
             catch (Exception e)
@@ -160,7 +161,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                var offlineCode = _services.GetUserService().GetOfflineActivationDataForUser(email);
+                var offlineCode = _service.GetOfflineActivationDataForUser(email);
                 return Ok(offlineCode);
             }
             catch (Exception e)

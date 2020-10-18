@@ -24,14 +24,12 @@ namespace IGNLogin.Pages
 
         public string Password { get; set; }
 
-        private IGNAuthentication.Domain.ServiceProvider _services;
         private HttpClient _apiRequester;
         private string _redirectDestination="";
 
-        public LoginModel(IGNAuthentication.Domain.ServiceProvider services)
+        public LoginModel()
         {
             _apiRequester = new HttpClient();
-            _services = services;
         }
 
         public void OnGet([FromQuery]string redir)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using IGNAuthentication.Domain.Interfaces.Services;
 using IGNLogin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +19,10 @@ namespace IGNLogin.Controllers
     [ApiController]
     public class CommunityController : ControllerBase
     {
-        private IGNAuthentication.Domain.ServiceProvider _services;
-        public CommunityController(IGNAuthentication.Domain.ServiceProvider services)
+        private IUserService _service;
+        public CommunityController(IUserService service)
         {
-            _services = services;
+            _service = service;
         }
 
         [HttpGet("makeadmin")]
@@ -33,14 +34,14 @@ namespace IGNLogin.Controllers
             {
                 return Unauthorized("wrong admin code provided");
             }
-            var user = _services.GetUserService().GetUser(email);
+            var user = _service.GetUser(email);
             if(user.Id == -1)
             {
                 return NotFound($"User with email {email} does not exist");
             }
             try
             {
-                _services.GetUserService().AssignRoles(user.Id, "User;Admin");
+                _service.AssignRoles(user.Id, "User;Admin");
             }
             catch(Exception e)
             {
@@ -55,8 +56,7 @@ namespace IGNLogin.Controllers
         {
             try
             {
-                return Ok(_services.GetUserService().
-                                    ListCommunity().
+                return Ok(_service.ListCommunity().
                                     Where(usr=> usr.Login != User.Claims.
                                           FirstOrDefault(uc => uc.Type == ClaimTypes.Name)?.Value));
             }
@@ -70,7 +70,7 @@ namespace IGNLogin.Controllers
         [AllowAnonymous]
         public IActionResult Register([FromBody]RegisterUserLoginModel newUser)
         {
-            var user = _services.GetUserService().RegisterCommunity(newUser.Login, newUser.Password, newUser.Email);
+            var user = _service.RegisterCommunity(newUser.Login, newUser.Password, newUser.Email);
             if (user.Id == -1)
             {
                 return BadRequest(user.LastError);
@@ -112,7 +112,7 @@ namespace IGNLogin.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody]UserLoginModel newUser)
         {
-            var user = _services.GetUserService().LoginCommunity(newUser.Email, newUser.Password);
+            var user = _service.LoginCommunity(newUser.Email, newUser.Password);
             if (user.Id == -1)
             {
                 return BadRequest(user.LastError);

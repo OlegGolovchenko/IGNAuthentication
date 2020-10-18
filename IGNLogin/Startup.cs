@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using IGNAuthentication.Data;
 using IGNAuthentication.Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using IGNAuthentication.Domain.Interfaces.Services;
+using IGNAuthentication.Domain.Services;
 
 namespace IGNLogin
 {
@@ -24,27 +27,25 @@ namespace IGNLogin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
             var connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING");
             var adminAccessCode = Environment.GetEnvironmentVariable("ADMIN_CODE");
             var msSqlConnectionString = Environment.GetEnvironmentVariable("SQLSERVER_CONNECTION_STRING");
-            IDataProvider dataConn;
             if (string.IsNullOrWhiteSpace(connectionString) && string.IsNullOrWhiteSpace(msSqlConnectionString))
             {
-                dataConn = null;
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(msSqlConnectionString))
                 {
-                    dataConn = new MySqlDataProvider(connectionString);
+                    services.AddSingleton<IDataProvider, MySqlDataProvider>(sp=>new MySqlDataProvider(sp.GetService<ILogger>()));
                 }
                 else
                 {
-                    dataConn = new MsSqlDataProvider(msSqlConnectionString);
+                    services.AddSingleton<IDataProvider, MsSqlDataProvider>(sp => new MsSqlDataProvider(sp.GetService<ILogger>()));
                 }
             }
-            var repo = new IGNAuthentication.Domain.ServiceProvider(dataConn);
-            services.AddSingleton(repo);
+            services.AddScoped<IUserService, UserService>(sp => new UserService(sp.GetService<IDataProvider>()));
             var secret = Environment.GetEnvironmentVariable("SECRET");
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddCors(x =>

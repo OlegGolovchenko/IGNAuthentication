@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using IGNAuthentication.Domain.Interfaces.Services;
 using IGNAuthentication.Domain.Models;
 using IGNLogin.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +21,13 @@ namespace IGNLogin.Pages
 
         public Models.UserModel UsrModel { get; set; }
 
-        private IGNAuthentication.Domain.ServiceProvider _services;
+        private IUserService _service;
         private HttpClient _apiRequester;
 
-        public LoggedInModel(IGNAuthentication.Domain.ServiceProvider services)
+        public LoggedInModel(IUserService service)
         {
             _apiRequester = new HttpClient();
-            _services = services;
+            _service = service;
             Users = new List<CommunityUserListModel>();
         }
 
@@ -41,7 +42,7 @@ namespace IGNLogin.Pages
                 var isadmin = JsonConvert.DeserializeObject<bool>(await isadminresponse.Content.ReadAsStringAsync());
                 if (isadmin)
                 {
-                    Users = _services.GetUserService().ListCommunity().Where(u=>u.Login != usr.Login);
+                    Users = _service.ListCommunity().Where(u=>u.Login != usr.Login);
                 }
             }
             else

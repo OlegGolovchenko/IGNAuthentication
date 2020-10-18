@@ -4,6 +4,7 @@ using System.Data.Common;
 using IGNAuthentication.Data.Enums;
 using IGNAuthentication.Domain.Interfaces.QueryProvider;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace IGNAuthentication.Data
 {
@@ -11,17 +12,20 @@ namespace IGNAuthentication.Data
     {
         private readonly string _connectionString;
         private MySqlConnection _connection;
+        private ILogger _logger;
 
         public bool queryToOutput = false;
 
-        public MySqlDataProvider(string connectionString)
+        public MySqlDataProvider(ILogger logger)
         {
-            _connectionString = connectionString;
+            _logger = logger;
+            _connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"); 
         }
 
         public void ExecuteNonQuery(IQueryResult query)
         {
-            if (_connection == null)
+            ResetConnection();
+            if (_connection == null || _connection.State != System.Data.ConnectionState.Open)
             {
                 _connection = new MySqlConnection(_connectionString);
                 _connection.Open();
@@ -36,7 +40,8 @@ namespace IGNAuthentication.Data
 
         public DbDataReader ExecuteReader(IQueryResult query)
         {
-            if (_connection == null)
+            ResetConnection();
+            if (_connection == null || _connection.State != System.Data.ConnectionState.Open)
             {
                 _connection = new MySqlConnection(_connectionString);
                 _connection.Open();
@@ -53,6 +58,38 @@ namespace IGNAuthentication.Data
         public IQuery Query()
         {
             return new SqlQuery() { Dialect = DialectEnum.MySQL };
+        }
+
+        public void ResetConnection()
+        {
+            try
+            {
+                _connection.Close();
+                _connection.Dispose();
+            }
+            catch (Exception e)
+            {
+
+            }
+            _connection = null;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                _connection.Close();
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+
+                _connection.Dispose();
+                _connection = null;
+            }
         }
     }
 }
