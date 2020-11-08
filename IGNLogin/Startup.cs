@@ -46,6 +46,7 @@ namespace IGNLogin
                 }
             }
             services.AddScoped<IUserService, UserService>(sp => new UserService(sp.GetService<IDataProvider>()));
+            services.AddScoped<ILicenseService, LicenseService>(sp => new LicenseService(sp.GetService<IDataProvider>()));
             var secret = Environment.GetEnvironmentVariable("SECRET");
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddCors(x =>
