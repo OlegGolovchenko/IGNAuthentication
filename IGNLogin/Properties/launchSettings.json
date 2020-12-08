@@ -25,8 +25,9 @@
         "SECRET": "TEST_SECRET_FOR_AUTHENTICATION_API",
         "ADMIN_CODE": "TnEh8JpN",
         "ISSUER": "http://localhost:5000",
-        "SQLSERVER_CONNECTION_STRING": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ignauth;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "MYSQL_CONNECTION_STRING": "Server=127.0.0.1;Port=3306;Database=ignauth;Uid=root;Pwd=IgRok_100692;",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ACTIVATION_MAIL": "igrok_be@hotmail.com"
       },
       "applicationUrl": "http://localhost:5000"
     }
