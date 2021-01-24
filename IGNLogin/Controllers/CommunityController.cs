@@ -71,6 +71,7 @@ namespace IGNLogin.Controllers
         public IActionResult Register([FromBody]RegisterUserLoginModel newUser)
         {
             var user = _service.RegisterCommunity(newUser.Login, newUser.Password, newUser.Email);
+            user.LoginTime = _service.UpdateLoginTime(user.Id, out var lastError);
             if (user.Id == -1)
             {
                 return BadRequest(user.LastError);
@@ -95,9 +96,8 @@ namespace IGNLogin.Controllers
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            var now = DateTime.UtcNow;
             var signature = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
-            var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("ISSUER"), null, claims, now, now.AddMinutes(15), signature);
+            var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("ISSUER"), null, claims, user.LoginTime.ToUniversalTime(), user.LoginTime.ToUniversalTime().AddMinutes(15), signature);
             var tokenResult = tokenHandler.WriteToken(token);
             var responseUser = new UserModel
             {
@@ -113,7 +113,8 @@ namespace IGNLogin.Controllers
         public IActionResult Login([FromBody]UserLoginModel newUser)
         {
             var user = _service.LoginCommunity(newUser.Email, newUser.Password);
-            if (user.Id == -1)
+            user.LoginTime = _service.UpdateLoginTime(user.Id, out var lastError);
+            if (user.Id == -1 || lastError != null)
             {
                 return BadRequest(user.LastError);
             }
@@ -137,9 +138,8 @@ namespace IGNLogin.Controllers
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            var now = DateTime.UtcNow;
             var signature = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
-            var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("ISSUER"), null, claims, now, now.AddMinutes(15), signature);
+            var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("ISSUER"), null, claims, user.LoginTime.ToUniversalTime(), user.LoginTime.ToUniversalTime().AddMinutes(15), signature);
             var tokenResult = tokenHandler.WriteToken(token);
             var responseUser = new UserModel
             {
