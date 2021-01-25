@@ -2,9 +2,12 @@
 @model IGNLogin.Pages.LoggedInModel
 @{
 }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="~/login/styles/index.css" rel="stylesheet" />
 <div class="header">
-    <span>IgRok-Net user management</span>
+    <span class="header_span">
+        IgRok-Net user management
+    </span>
 </div>
 <div class="content">
     <form method="post">
@@ -17,29 +20,32 @@
         <ul>
             @foreach (var usr in Model.Users)
             {
-            <li>
-                <span>
-                    @usr.Login
-                </span>
-                <span>
-                    @usr.LoginTime
-                </span>
-                @if (usr.IsActive)
-                {
-                    <span class="status_active"></span>
-                    <a href="/DeactivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Deactivate user</a>
-                }
-                @if (!usr.IsActive)
-                {
-                    <span class="status_inactive"></span>
-                    <a href="/ActivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Activate user</a>
-                }
-            </li>
+                <li>
+                    <span>
+                        @usr.Login
+                    </span>
+                    <span>
+                        @usr.LoginTime
+                    </span>
+                    @if (usr.IsActive)
+                    {
+                        <span class="status_active"></span>
+                        <a href="/DeactivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Deactivate user</a>
+                    }
+                    @if (!usr.IsActive)
+                    {
+                        <span class="status_inactive"></span>
+                        <a href="/ActivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Activate user</a>
+                    }
+                </li>
             }
         </ul>
     </p>
 </div>
 <div class="footer">
     <span class="copyright">Copyright Oleg Golovchenko</span>
+    <span class="copyright"> | </span>
+    <span class="copyright">contact: <a href=mailto:igrok_be@hotmail.com>igrok_be@hotmail.com</a></span>
+    <span class="copyright"> | </span>
     <span class="copy_date">2020</span>
 </div>
