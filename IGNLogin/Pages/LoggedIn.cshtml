@@ -21,12 +21,22 @@
             @foreach (var usr in Model.Users)
             {
                 <li>
-                    <span>
-                        @usr.Login
-                    </span>
-                    <span>
-                        @usr.LoginTime
-                    </span>
+                    <p>
+                        <span>
+                            @usr.Login
+                        </span>
+                    </p>
+                    <p>
+                        <span>
+                            @usr.LoginTime
+                        </span>
+                    </p>
+                    <p>
+                        <span>
+                            @usr.ContactEmail
+                        </span>
+                    </p>
+                    <p>
                     @if (usr.IsActive)
                     {
                         <span class="status_active"></span>
@@ -37,6 +47,7 @@
                         <span class="status_inactive"></span>
                         <a href="/ActivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Activate user</a>
                     }
+                    </p>
                 </li>
             }
         </ul>

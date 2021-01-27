@@ -46,4 +46,10 @@
     <Folder Include="Lib\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\login\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

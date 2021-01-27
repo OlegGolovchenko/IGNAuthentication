@@ -72,7 +72,8 @@ namespace IGNLogin.Controllers
         {
             var user = _service.RegisterCommunity(newUser.Login, newUser.Password, newUser.Email);
             user.LoginTime = _service.UpdateLoginTime(user.Id, out var lastError);
-            if (user.Id == -1)
+            user.ContactEmail = _service.UpdateContactEmail(user.Id, newUser.Email, out lastError);
+            if (user.Id == -1 || lastError != null)
             {
                 return BadRequest(user.LastError);
             }
@@ -114,6 +115,7 @@ namespace IGNLogin.Controllers
         {
             var user = _service.LoginCommunity(newUser.Email, newUser.Password);
             user.LoginTime = _service.UpdateLoginTime(user.Id, out var lastError);
+            user.ContactEmail = _service.UpdateContactEmail(user.Id, newUser.Email, out lastError);
             if (user.Id == -1 || lastError != null)
             {
                 return BadRequest(user.LastError);

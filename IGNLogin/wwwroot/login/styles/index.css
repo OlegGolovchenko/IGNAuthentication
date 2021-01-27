@@ -130,7 +130,8 @@ label {
     border-radius: 5px;
     background-color: cadetblue;
     color: white;
-    height: 25px;
+    height: auto;
+    padding: 5px;
 }
 
 button {
@@ -194,5 +195,15 @@ ul {
 li {
     display: block;
     float: left;
-    width: 200px;
+    width: auto;
+    background-color: cadetblue;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    border-radius: 15px;
 }
+
+    li p span {
+        display: inline-block;
+    }
