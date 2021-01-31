@@ -47,14 +47,29 @@ body::-webkit-scrollbar {
 
 .header_span {
     margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
     text-align: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     height: 30px;
     top: 0;
     bottom: 0;
     left: 20px;
     display: block;
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        height: 10%;
+    }
+
+    .header_span {
+        margin-top: 3%;
+        margin-bottom: 3%;
+        padding-top: 3%;
+        padding-bottom: 3%;
+    }
 }
 
 .content {
@@ -72,7 +87,8 @@ body::-webkit-scrollbar {
 
 @media only screen and (max-width: 600px) {
     .content {
-        bottom: 12%;
+        top: 10%;
+        bottom: 6%;
         width: 100%;
         left: 0;
         overflow: auto;
@@ -98,7 +114,7 @@ body::-webkit-scrollbar {
 
 @media only screen and (max-width: 600px) {
     .footer {
-        height: 11%;
+        height: 5%;
     }
 }
 
@@ -148,9 +164,10 @@ button {
 
 .button {
     border-radius: 5px;
-    height: 25px;
+    height: auto;
     background-color: cadetblue;
     color: white;
+    padding: 5px;
 }
 
     .button:hover {
@@ -159,16 +176,25 @@ button {
     }
 
 .button_header {
+    margin-left: 5px;
     border-radius: 5px;
-    height: 25px;
+    height: auto;
     background-color: white;
     color: grey;
+    padding: 5px;
+    float: left;
 }
 
     .button_header:hover {
         background-color: aquamarine;
         color: grey;
     }
+
+@media only screen and (max-width: 600px) {
+    .button_header{
+        margin-top: 2px;
+    }
+}
 
 .status_active {
     background-color: green;
