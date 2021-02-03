@@ -152,6 +152,22 @@ namespace IGNLogin.Controllers
             return Ok(responseUser);
         }
 
+        [HttpGet("my")]
+        public IActionResult MyUser(string token)
+        {
+            if(this.User != null)
+            {
+                var usr = new UserModel
+                {
+                    Login = this.User.Identity.Name,
+                    Email = this.User.Claims.SingleOrDefault(x => x.Type == ClaimTypes.Email).Value,
+                    Token = token
+                };
+                return Ok(usr);
+            }
+            return Unauthorized();
+        }
+
         [HttpGet("test")]
         public IActionResult TestAuthorisation()
         {

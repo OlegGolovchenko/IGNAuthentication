@@ -17,10 +17,10 @@ namespace IGNLogin.Pages
             _service = service;
         }
 
-        public IActionResult OnGet([FromQuery] long id, [FromQuery] Models.UserModel userModel)
+        public IActionResult OnGet([FromQuery] long id, [FromQuery] string token)
         {
             _service.DeactivateUser(id);
-            return RedirectToPage("loggedin", userModel);
+            return RedirectToPage("loggedin", new { token });
         }
     }
 }

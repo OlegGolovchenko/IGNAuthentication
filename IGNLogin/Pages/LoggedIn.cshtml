@@ -40,12 +40,12 @@
                     @if (usr.IsActive)
                     {
                         <span class="status_active"></span>
-                        <a href="/DeactivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Deactivate user</a>
+                        <a href="/DeactivateUser/?id=@usr.UserId&token=@Model.UsrModel.Token">Deactivate user</a>
                     }
                     @if (!usr.IsActive)
                     {
                         <span class="status_inactive"></span>
-                        <a href="/ActivateUser/?id=@usr.UserId&Login=@Model.UsrModel.Login&Email=@Model.UsrModel.Email&Token=@Model.UsrModel.Token">Activate user</a>
+                        <a href="/ActivateUser/?id=@usr.UserId&token=@Model.UsrModel.Token">Activate user</a>
                     }
                     </p>
                 </li>

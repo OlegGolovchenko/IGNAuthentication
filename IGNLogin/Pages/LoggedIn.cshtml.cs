@@ -31,23 +31,28 @@ namespace IGNLogin.Pages
             Users = new List<CommunityUserListModel>();
         }
 
-        public async Task OnGetAsync([FromQuery] Models.UserModel usr)
+        public async Task OnGetAsync([FromQuery] string token)
         {
-            UserName = usr.Login;
-            UsrModel = usr;
-            _apiRequester.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usr.Token);
-            var isadminresponse = await _apiRequester.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/isadmin");
-            if (isadminresponse.IsSuccessStatusCode)
+            _apiRequester.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var userResponse = await _apiRequester.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/my?token={token}");
+            if (userResponse.IsSuccessStatusCode)
             {
-                var isadmin = JsonConvert.DeserializeObject<bool>(await isadminresponse.Content.ReadAsStringAsync());
-                if (isadmin)
+                var usr = JsonConvert.DeserializeObject<IGNLogin.Models.UserModel>(await userResponse.Content.ReadAsStringAsync());
+                UserName = usr.Login;
+                UsrModel = usr;
+                var isadminresponse = await _apiRequester.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/isadmin");
+                if (isadminresponse.IsSuccessStatusCode)
                 {
-                    Users = _service.ListCommunity().Where(u=>u.Login != usr.Login);
+                    var isadmin = JsonConvert.DeserializeObject<bool>(await isadminresponse.Content.ReadAsStringAsync());
+                    if (isadmin)
+                    {
+                        Users = _service.ListCommunity().Where(u => u.Login != usr.Login);
+                    }
                 }
-            }
-            else
-            {
-                Users = new List<CommunityUserListModel>();
+                else
+                {
+                    Users = new List<CommunityUserListModel>();
+                }
             }
         }
 
