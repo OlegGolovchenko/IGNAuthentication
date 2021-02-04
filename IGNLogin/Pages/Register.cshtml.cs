@@ -46,11 +46,11 @@ namespace IGNLogin.Pages
                 var resultUser = JsonConvert.DeserializeObject<UserModel>(await result.Content.ReadAsStringAsync());
                 if (string.IsNullOrWhiteSpace(redir))
                 {
-                    return RedirectToPage("loggedin", resultUser);
+                    return RedirectToPage("loggedin", new { resultUser.Token });
                 }
                 else
                 {
-                    return Redirect($"{redir}?Login={resultUser.Login}&Email={resultUser.Email}&Token={resultUser.Token}");
+                    return Redirect($"{redir}?token={resultUser.Token}");
                 }
             }
             else
