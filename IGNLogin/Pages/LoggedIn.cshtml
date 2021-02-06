@@ -15,6 +15,7 @@
         <button type="submit">Log out</button>
         @Html.AntiForgeryToken()
         <a href="/api/user/offkeygen.zip">Download offline keygen</a>
+        <a href="/api/community/offline?token=@Model.UsrModel.Token">Download offline file</a>
     </form>
     <p>
         <ul>
