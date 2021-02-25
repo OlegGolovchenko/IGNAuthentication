@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using IGNLogin.Exceptions;
 using IGNLogin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,6 +15,8 @@ namespace IGNLogin.Pages
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public string Error { get; private set; }
 
         private HttpClient _apiRequester;
         private string _redirectDestination="";
@@ -52,8 +55,9 @@ namespace IGNLogin.Pages
             }
             else
             {
-                var resultError = JsonConvert.DeserializeObject<Exception>(await result.Content.ReadAsStringAsync());
-                return BadRequest(resultError);
+                var resultError = JsonConvert.DeserializeObject<IgrokNetException>(await result.Content.ReadAsStringAsync());
+                Error = resultError?.Message;
+                return Page();
             }
         }
     }

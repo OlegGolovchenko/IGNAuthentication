@@ -14,7 +14,7 @@
 body {
     width: auto;
     height: 100%;
-    background-color: azure;
+    background-color: lightblue;
     margin: 0;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -78,6 +78,7 @@ body::-webkit-scrollbar {
     height: 100%;
     top: 50px;
     left: 10%;
+    right: 10%;
     bottom: 50px;
     position: relative;
     z-index: 0;
@@ -215,7 +216,10 @@ button {
 }
 
 ul {
-    width: 100%;
+    width: auto;
+    overflow: auto;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 li {
@@ -233,3 +237,7 @@ li {
     li p span {
         display: inline-block;
     }
+
+.error {
+    color: red;
+}

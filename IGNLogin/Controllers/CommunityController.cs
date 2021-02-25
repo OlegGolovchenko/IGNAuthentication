@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 using IGNAuthentication.Domain.Interfaces.Services;
+using IGNLogin.Exceptions;
 using IGNLogin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -69,6 +70,23 @@ namespace IGNLogin.Controllers
             }
         }
 
+        [HttpGet("loggedInCount")]
+        [AllowAnonymous]
+        public IActionResult CountLoggedInUsers()
+        {
+            try
+            {
+                var now = DateTime.UtcNow;
+                return Ok(_service.ListCommunity().
+                    Where(usr=>usr.LoginTime.AddMinutes(15) >= now).
+                    Count());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public IActionResult Register([FromBody]RegisterUserLoginModel newUser)
@@ -78,7 +96,7 @@ namespace IGNLogin.Controllers
             user.ContactEmail = _service.UpdateContactEmail(user.Id, newUser.Email, out lastError);
             if (user.Id == -1 || lastError != null)
             {
-                return BadRequest(user.LastError);
+                return BadRequest(new IgrokNetException(user.LastError.Message));
             }
             var adminAccessCode = Environment.GetEnvironmentVariable("ADMIN_CODE");
             var secret = Environment.GetEnvironmentVariable("SECRET");
@@ -123,7 +141,7 @@ namespace IGNLogin.Controllers
             user.ContactEmail = _service.UpdateContactEmail(user.Id, newUser.Email, out lastError);
             if (user.Id == -1 || lastError != null)
             {
-                return BadRequest(user.LastError);
+                return BadRequest(new IgrokNetException(user.LastError.Message));
             }
             var adminAccessCode = Environment.GetEnvironmentVariable("ADMIN_CODE");
             var secret = Environment.GetEnvironmentVariable("SECRET");
