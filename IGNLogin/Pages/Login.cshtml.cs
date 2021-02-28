@@ -35,7 +35,7 @@ namespace IGNLogin.Pages
 
         public async Task<IActionResult> OnPostAsync([FromForm]string email, [FromForm]string password,[FromQuery]string redir)
         {
-            var result = await _apiRequester.PostAsync($"{Request.Scheme}://{Request.Host}/api/community/login", 
+            var result = await _apiRequester.PostAsync($"http://localhost:5000/api/community/login", 
                 new StringContent(JsonConvert.SerializeObject(new UserLoginModel
                 {
                     Email = email,

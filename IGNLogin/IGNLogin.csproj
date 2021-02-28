@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <PublishDir>$(OutDir)_PublishedWebsites\NetCoreWebApp\</PublishDir>
+    <UserSecretsId>8c65c5ba-3ba1-4d3f-8ec0-c5c6ad527b2b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

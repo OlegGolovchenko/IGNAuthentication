@@ -14,6 +14,8 @@ namespace IGNLogin.Models
 
         public string OfflineActivationCode { get; set; }
 
+        public bool IsActive { get; set; }
+
         public string Token { get; set; }
     }
 }

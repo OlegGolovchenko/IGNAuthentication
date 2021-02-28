@@ -34,13 +34,13 @@ namespace IGNLogin.Pages
         public async Task OnGetAsync([FromQuery] string token)
         {
             _apiRequester.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var userResponse = await _apiRequester.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/my?token={token}");
+            var userResponse = await _apiRequester.GetAsync($"http://localhost:5000/api/community/my?token={token}");
             if (userResponse.IsSuccessStatusCode)
             {
                 var usr = JsonConvert.DeserializeObject<IGNLogin.Models.UserModel>(await userResponse.Content.ReadAsStringAsync());
                 UserName = usr.Login;
                 UsrModel = usr;
-                var isadminresponse = await _apiRequester.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/isadmin");
+                var isadminresponse = await _apiRequester.GetAsync($"http://localhost:5000/api/community/isadmin");
                 if (isadminresponse.IsSuccessStatusCode)
                 {
                     var isadmin = JsonConvert.DeserializeObject<bool>(await isadminresponse.Content.ReadAsStringAsync());

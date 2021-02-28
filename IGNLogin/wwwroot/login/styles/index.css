@@ -241,3 +241,22 @@ li {
 .error {
     color: red;
 }
+
+.rightRibbon {
+    display: block;
+    right: 0px;
+    width: 10%;
+    height: auto;
+    background-color: white;
+    top: 50px;
+    position: absolute;
+    left: 90%;
+    border-radius: 25px;
+}
+
+    .rightRibbon iframe {
+        margin: 5px;
+        border-radius: 25px;
+        width: 95%;
+        right: 5px;
+    }

@@ -13,6 +13,7 @@ using IGNAuthentication.Domain.Services;
 using IGNQuery.Interfaces;
 using IGNQuery.MySql;
 using IGNQuery.SqlServer;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace IGNLogin
 {
@@ -93,6 +94,11 @@ namespace IGNLogin
             });
             services.AddControllers();
             services.AddRazorPages();
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,6 +108,7 @@ namespace IGNLogin
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseForwardedHeaders();
             app.UseCors();
             app.UseDefaultFiles();
             app.UseStaticFiles();

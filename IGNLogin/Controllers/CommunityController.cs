@@ -109,7 +109,8 @@ namespace IGNLogin.Controllers
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim("IgRok-Net:OfflineCode", offacc)
+                new Claim("IgRok-Net:OfflineCode", offacc),
+                new Claim("IgRok-Net:IsActive", $"{user.IsActive||user.Roles.Contains("Admin")}")
             };
             if(!user.Roles.Any())
             {
@@ -154,7 +155,8 @@ namespace IGNLogin.Controllers
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim("IgRok-Net:OfflineCode", offacc)
+                new Claim("IgRok-Net:OfflineCode", offacc),
+                new Claim("IgRok-Net:IsActive", $"{user.IsActive||user.Roles.Contains("Admin")}")
             };
             if (!user.Roles.Any())
             {
@@ -182,11 +184,13 @@ namespace IGNLogin.Controllers
         {
             if(this.User != null)
             {
+                bool.TryParse(this.User.Claims.SingleOrDefault(x => x.Type == "IgRok-Net:IsActive")?.Value, out var active);
                 var usr = new UserModel
                 {
                     Login = this.User.Identity.Name,
                     Email = this.User.Claims.SingleOrDefault(x => x.Type == ClaimTypes.Email)?.Value,
                     OfflineActivationCode = this.User.Claims.SingleOrDefault(x=>x.Type == "IgRok-Net:OfflineCode")?.Value,
+                    IsActive = active,
                     Token = token
                 };
                 return Ok(usr);
@@ -206,23 +210,13 @@ namespace IGNLogin.Controllers
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                    var userResponse = await httpClient.GetAsync($"{Request.Scheme}://{Request.Host}/api/community/my?token={token}");
+                    var userResponse = await httpClient.GetAsync($"http://localhost:5000/api/community/my?token={token}");
                     if (userResponse.IsSuccessStatusCode)
                     {
                         user = JsonConvert.DeserializeObject<UserModel>(await userResponse.Content.ReadAsStringAsync());
                     }
                 }
                 return File(Encoding.UTF8.GetBytes(user.OfflineActivationCode), "text/plain", "license.txt");
-            }
-            return Unauthorized();
-        }
-
-        [HttpGet("test")]
-        public IActionResult TestAuthorisation()
-        {
-            if (this.User != null)
-            {
-                return Ok($"user logged in: {this.User.Claims.FirstOrDefault(usr => usr.Type == ClaimTypes.Name)?.Value}");
             }
             return Unauthorized();
         }
