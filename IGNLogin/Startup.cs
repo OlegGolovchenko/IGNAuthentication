@@ -26,17 +26,15 @@ namespace IGNLogin
 
         public IConfiguration Configuration { get; }
 
-        private MySqlDataProvider InitMySqlDataProvider(ILogger logger,string activationEmail)
+        private MySqlDataDriver InitMySqlDataProvider(ILogger logger,string activationEmail, string connectionString)
         {
-            var mysqldp = new MySqlDataProvider(activationEmail);
-            mysqldp.queryToOutput = true;
+            var mysqldp = new MySqlDataDriver(activationEmail, connectionString);
             return mysqldp;
         }
 
-        private MsSqlDataProvider InitMsSqlDataProvider(ILogger logger, string activationEmail)
+        private MsSqlDataDriver InitMsSqlDataProvider(ILogger logger, string activationEmail, string connectionString)
         {
-            var mssqldp = new MsSqlDataProvider(activationEmail);
-            mssqldp.queryToOutput = true;
+            var mssqldp = new MsSqlDataDriver(activationEmail, connectionString);
             return mssqldp;
         }
 
@@ -55,15 +53,15 @@ namespace IGNLogin
             {
                 if (string.IsNullOrWhiteSpace(msSqlConnectionString))
                 {
-                    services.AddSingleton<IDataProvider, MySqlDataProvider>(sp => InitMySqlDataProvider(sp.GetService<ILogger>(),activationMail));
+                    services.AddSingleton<IDataDriver, MySqlDataDriver>(sp => InitMySqlDataProvider(sp.GetService<ILogger>(),activationMail, connectionString));
                 }
                 else
                 {
-                    services.AddSingleton<IDataProvider, MsSqlDataProvider>(sp => InitMsSqlDataProvider(sp.GetService<ILogger>(), activationMail));
+                    services.AddSingleton<IDataDriver, MsSqlDataDriver>(sp => InitMsSqlDataProvider(sp.GetService<ILogger>(), activationMail, connectionString));
                 }
             }
-            services.AddScoped<IUserService, UserService>(sp => new UserService(sp.GetService<IDataProvider>()));
-            services.AddScoped<ILicenseService, LicenseService>(sp => new LicenseService(sp.GetService<IDataProvider>()));
+            services.AddScoped<IUserService, UserService>(sp => new UserService(sp.GetService<IDataDriver>(), activationMail));
+            services.AddScoped<ILicenseService, LicenseService>(sp => new LicenseService(sp.GetService<IDataDriver>(), activationMail));
             var secret = Environment.GetEnvironmentVariable("SECRET");
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddCors(x =>

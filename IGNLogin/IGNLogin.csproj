@@ -15,14 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IGNQuery.MySql" Version="1.1.2" />
-    <PackageReference Include="IGNQuery.SqlServer" Version="1.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+    <PackageReference Include="IGNQuery" Version="1.1.8.1" />
+    <PackageReference Include="IGNQuery.MySql" Version="1.1.8" />
+    <PackageReference Include="IGNQuery.SqlServer" Version="1.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="MySql.Data" Version="8.0.23" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.9.0" />
   </ItemGroup>
 
   <ItemGroup>
