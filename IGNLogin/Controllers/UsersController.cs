@@ -15,6 +15,7 @@ namespace IGNLogin.Controllers
         {
             _service = service;
         }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult GetOrCreateUser([FromQuery]string email)
