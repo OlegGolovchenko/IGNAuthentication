@@ -70,6 +70,22 @@ namespace IGNLogin.Controllers
             }
         }
 
+        [HttpGet("usersCount")]
+        [AllowAnonymous]
+        public IActionResult CountUsers()
+        {
+            try
+            {
+                var now = DateTime.UtcNow;
+                return Ok(_service.ListCommunity().
+                    Count());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
         [HttpGet("loggedInCount")]
         [AllowAnonymous]
         public IActionResult CountLoggedInUsers()

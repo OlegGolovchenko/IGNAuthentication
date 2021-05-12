@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IGNAuthentication.Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 
 namespace IGNLogin.Pages
 {
@@ -16,17 +14,25 @@ namespace IGNLogin.Pages
 
         public int Total { get; private set; }
 
-        public StatisticsModel(IUserService service)
+        private HttpClient _apiRequester;
+
+        public StatisticsModel()
         {
-            this.service = service;
+            _apiRequester = new HttpClient();
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var users = this.service.ListCommunity();
-            var now = DateTime.UtcNow;
-            LoggedIn = users.Count(x => x.LoginTime.AddMinutes(15) >= now);
-            Total = users.Count();
+            var usersResponse = await _apiRequester.GetAsync("http://localhost:5000/api/community/usersCount");
+            if (usersResponse.IsSuccessStatusCode)
+            {
+                Total = JsonConvert.DeserializeObject<int>(await usersResponse.Content.ReadAsStringAsync());
+            }
+            var usersCountResponse = await _apiRequester.GetAsync("http://localhost:5000/api/community/loggedInCount");
+            if (usersCountResponse.IsSuccessStatusCode)
+            {
+                LoggedIn = JsonConvert.DeserializeObject<int>(await usersCountResponse.Content.ReadAsStringAsync());
+            }
         }
     }
 }
