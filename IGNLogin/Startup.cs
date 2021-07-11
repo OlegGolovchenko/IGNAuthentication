@@ -60,8 +60,8 @@ namespace IGNLogin
                     services.AddSingleton<IDataDriver, MsSqlDataDriver>(sp => InitMsSqlDataProvider(sp.GetService<ILogger>(), activationMail, connectionString));
                 }
             }
-            services.AddScoped<IUserService, UserService>(sp => new UserService(sp.GetService<IDataDriver>(), activationMail));
-            services.AddScoped<ILicenseService, LicenseService>(sp => new LicenseService(sp.GetService<IDataDriver>(), activationMail));
+            services.AddSingleton(sp => new IGNAuthentication.Domain.ServiceProvider(sp.GetService<IDataDriver>(), activationMail));
+            services.AddScoped(sp => sp.GetService<IGNAuthentication.Domain.ServiceProvider>().GetUserService());
             var secret = Environment.GetEnvironmentVariable("SECRET");
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddCors(x =>
